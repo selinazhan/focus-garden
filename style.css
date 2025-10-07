@@ -4,8 +4,10 @@
   --accent: #b4c8b8;       /* sage gray */
   --button: #a5c9a1;       /* mint green */
   --button-hover: #8fbf8e; /* darker mint */
-  --text: #44524a;         /* dark green-gray */
+  --focus-text: #44524a; /* calm greenish gray */
+  --break-text: #49769c; /* muted blue */
   --white: #ffffff;
+  
 }
 
 body.focus-mode {
@@ -21,7 +23,7 @@ body.break-mode {
 body {
   font-family: 'Nunito', sans-serif;
   background-color: var(--focus-bg);
-  color: var(--text);
+  color: var(--focus-text);
   text-align: center;
   padding-top: 50px;
   transition: background-color 0.5s ease;
