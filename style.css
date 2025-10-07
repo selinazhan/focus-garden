@@ -32,3 +32,9 @@ button {
 button:hover {
   background-color: #6fb56f;
 }
+
+#mode-label {
+  font-size: 18px;
+  color: #5a815a;
+  margin: 8px 0;
+}
