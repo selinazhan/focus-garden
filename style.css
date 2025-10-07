@@ -1,22 +1,34 @@
+:root {
+  --focus-bg: #f3f8f1;     /* light sage */
+  --break-bg: #e8f5ff;     /* soft blue */
+  --accent: #b4c8b8;       /* sage gray */
+  --button: #a5c9a1;       /* mint green */
+  --button-hover: #8fbf8e; /* darker mint */
+  --text: #44524a;         /* dark green-gray */
+  --white: #ffffff;
+}
+
 body.focus-mode {
-  background-color: #f3f8f1; /* light green */
+  background-color: var(--focus-bg);
   transition: background-color 0.5s ease;
 }
 
 body.break-mode {
-  background-color: #e8f5ff; /* light blue */
+  background-color: var(--break-bg);
   transition: background-color 0.5s ease;
 }
 
 body {
-  background-color: #f3f8f1;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Kalam', sans-serif;
+  background-color: var(--focus-bg);
+  color: var(--text);
   text-align: center;
   padding-top: 50px;
+  transition: background-color 0.5s ease;
 }
 
 .container {
-  background: white;
+  background: var(--white);
   width: 300px;
   margin: auto;
   padding: 20px;
@@ -34,18 +46,23 @@ button {
   padding: 8px 14px;
   border: none;
   border-radius: 8px;
-  background-color: #8fc98f;
-  color: white;
+  background-color: var(--button);
+  color: var(--white);
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #6fb56f;
+  background-color: var(--button-hover);
 }
 
 #mode-label {
   font-size: 18px;
-  color: #5a815a;
+  color: var(--accent);
   margin: 8px 0;
+}
+
+.timer h2 {
+  font-size: 48px;
+  margin: 20px 0;
 }
 

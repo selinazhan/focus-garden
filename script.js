@@ -35,14 +35,14 @@ function startTimer() {
         if (isFocus) {
           alert("Focus session complete! Time for a 5-minute break 🌿");
           isFocus = false;
-          modeLabel.textContent = "Break Mode 🌿";
+          modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
           document.body.classList.replace("focus-mode", "break-mode");
           time = breakTime;
           startTimer();
         } else {
           alert("Break over! Back to focus 🌱");
           isFocus = true;
-          modeLabel.textContent = "Focus Mode 🌱";
+          modeLabel.innerHTML = 'Focus Mode <i class="fas fa-book-open"></i>';
           document.body.classList.replace("break-mode", "focus-mode");
           time = focusTime;
           updateDisplay();
@@ -65,7 +65,7 @@ resetBtn.addEventListener("click", () => {
   isFocus = true;
   document.body.classList.remove("break-mode");
   document.body.classList.add("focus-mode");
-  modeLabel.textContent = "Focus Mode 🌱";
+  modeLabel.innerHTML = 'Focus Mode <i class="fas fa-book-open"></i>';
   time = focusTime;
   updateDisplay();
 });
