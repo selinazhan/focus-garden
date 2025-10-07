@@ -9,8 +9,9 @@ const timeDisplay = document.getElementById("time");
 const startBtn = document.getElementById("start");
 const pauseBtn = document.getElementById("pause");
 const resetBtn = document.getElementById("reset");
-
 const modeLabel = document.getElementById("mode-label");
+
+document.body.classList.add("focus-mode");
 
 function updateDisplay() {
   const minutes = Math.floor(time / 60);
@@ -35,12 +36,14 @@ function startTimer() {
           alert("Focus session complete! Time for a 5-minute break 🌿");
           isFocus = false;
           modeLabel.textContent = "Break Mode 🌿";
+          document.body.classList.replace("focus-mode", "break-mode");
           time = breakTime;
-          startTimer(); // auto-start break
+          startTimer();
         } else {
           alert("Break over! Back to focus 🌱");
           isFocus = true;
           modeLabel.textContent = "Focus Mode 🌱";
+          document.body.classList.replace("break-mode", "focus-mode");
           time = focusTime;
           updateDisplay();
         }
@@ -60,6 +63,8 @@ resetBtn.addEventListener("click", () => {
   clearInterval(timer);
   running = false;
   isFocus = true;
+  document.body.classList.remove("break-mode");
+  document.body.classList.add("focus-mode");
   modeLabel.textContent = "Focus Mode 🌱";
   time = focusTime;
   updateDisplay();
