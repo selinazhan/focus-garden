@@ -1,6 +1,9 @@
-let time = 25 * 60;
+let focusTime = 25 * 60;
+let breakTime = 5 * 60;
+let time = focusTime;
 let timer;
 let running = false;
+let isFocus = true;
 
 const timeDisplay = document.getElementById("time");
 const startBtn = document.getElementById("start");
@@ -10,10 +13,12 @@ const resetBtn = document.getElementById("reset");
 function updateDisplay() {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
-  timeDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  timeDisplay.textContent = `${String(minutes).padStart(2, "0")}:${String(
+    seconds
+  ).padStart(2, "0")}`;
 }
 
-startBtn.addEventListener("click", () => {
+function startTimer() {
   if (!running) {
     running = true;
     timer = setInterval(() => {
@@ -22,10 +27,24 @@ startBtn.addEventListener("click", () => {
         updateDisplay();
       } else {
         clearInterval(timer);
+        running = false;
+        if (isFocus) {
+          alert("Focus session complete! Time for a 5-minute break 🌿");
+          isFocus = false;
+          time = breakTime;
+          startTimer(); // auto-start break
+        } else {
+          alert("Break over! Back to focus 🌱");
+          isFocus = true;
+          time = focusTime;
+          updateDisplay();
+        }
       }
     }, 1000);
   }
-});
+}
+
+startBtn.addEventListener("click", startTimer);
 
 pauseBtn.addEventListener("click", () => {
   clearInterval(timer);
@@ -35,7 +54,8 @@ pauseBtn.addEventListener("click", () => {
 resetBtn.addEventListener("click", () => {
   clearInterval(timer);
   running = false;
-  time = 25 * 60;
+  isFocus = true;
+  time = focusTime;
   updateDisplay();
 });
 
