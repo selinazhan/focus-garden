@@ -1,22 +1,29 @@
 :root {
-  --focus-bg: #f3f8f1;     /* light sage */
-  --break-bg: #e8f5ff;     /* soft blue */
-  --accent: #b4c8b8;       /* sage gray */
-  --button: #a5c9a1;       /* mint green */
-  --button-hover: #8fbf8e; /* darker mint */
-  --focus-text: #44524a; /* calm greenish gray */
-  --break-text: #49769c; /* muted blue */
+  --focus-bg: #f3f8f1;
+  --break-bg: #e8f5ff;
+
+  --focus-text: #44524a;  /* calm green-gray */
+  --break-text: #49769c;  /* soft muted blue */
+
+  --accent: #b4c8b8;
+
+  --button: #a5c9a1;
+  --button-hover: #8fbf8e;
+  --button-break: #91bfe4;       /* pastel blue button */
+  --button-break-hover: #74a8d6; /* darker blue hover */
+
   --white: #ffffff;
-  
 }
 
 body.focus-mode {
   background-color: var(--focus-bg);
+  color: var(--focus-text);
   transition: background-color 0.5s ease;
 }
 
 body.break-mode {
   background-color: var(--break-bg);
+  color: var(--break-text);
   transition: background-color 0.5s ease;
 }
 
@@ -56,6 +63,23 @@ button {
 button:hover {
   background-color: var(--button-hover);
 }
+
+body.focus-mode button {
+  background-color: var(--button);
+}
+
+body.focus-mode button:hover {
+  background-color: var(--button-hover);
+}
+
+body.break-mode button {
+  background-color: var(--button-break);
+}
+
+body.break-mode button:hover {
+  background-color: var(--button-break-hover);
+}
+
 
 #mode-label {
   font-size: 18px;

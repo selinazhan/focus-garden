@@ -17,6 +17,17 @@ if ("Notification" in window) {
   Notification.requestPermission();
 }
 
+function updateColors() {
+  const isBreak = document.body.classList.contains("break-mode");
+  const newColor = isBreak ? "var(--break-text)" : "var(--focus-text)";
+
+  document.querySelector("h1").style.color = newColor;
+  document.querySelector(".subtitle").style.color = newColor;
+  document.querySelector(".streak").style.color = newColor;
+  timeDisplay.style.color = newColor;
+  modeLabel.style.color = newColor;
+}
+
 function updateDisplay() {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -48,6 +59,7 @@ function startTimer() {
           isFocus = false;
           modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
           document.body.classList.replace("focus-mode", "break-mode");
+          updateColors();
           timeDisplay.style.color = "var(--break-text)";
           modeLabel.style.color = "var(--break-text)";
           time = breakTime;
@@ -64,6 +76,7 @@ function startTimer() {
           isFocus = true;
           modeLabel.innerHTML = 'Focus Mode <i class="fas fa-book-open"></i>';
           document.body.classList.replace("break-mode", "focus-mode");
+          updateColors();
           timeDisplay.style.color = "var(--focus-text)";
           modeLabel.style.color = "var(--accent)";
           time = focusTime;
@@ -87,6 +100,7 @@ resetBtn.addEventListener("click", () => {
   isFocus = true;
   document.body.classList.remove("break-mode");
   document.body.classList.add("focus-mode");
+  updateColors();
   timeDisplay.style.color = "var(--focus-text)";
   modeLabel.style.color = "var(--accent)";
   modeLabel.innerHTML = 'Focus Mode <i class="fas fa-book-open"></i>';
