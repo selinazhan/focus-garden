@@ -1,3 +1,13 @@
+body.focus-mode {
+  background-color: #f3f8f1; /* light green */
+  transition: background-color 0.5s ease;
+}
+
+body.break-mode {
+  background-color: #e8f5ff; /* light blue */
+  transition: background-color 0.5s ease;
+}
+
 body {
   background-color: #f3f8f1;
   font-family: 'Inter', sans-serif;
@@ -38,3 +48,4 @@ button:hover {
   color: #5a815a;
   margin: 8px 0;
 }
+
