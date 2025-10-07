@@ -39,23 +39,33 @@ function updateDisplay() {
 function startTimer() {
   if (!running) {
     running = true;
+
+    // set the target end time based on current time
+    const endTime = Date.now() + time * 1000;
+
     timer = setInterval(() => {
-      if (time > 0) {
-        time--;
+      const remaining = Math.round((endTime - Date.now()) / 1000);
+
+      if (remaining > 0) {
+        time = remaining;
         updateDisplay();
       } else {
         clearInterval(timer);
         running = false;
+        time = 0;
+        updateDisplay();
 
+        // --- mode switch ---
         if (isFocus) {
           if (Notification.permission === "granted") {
             new Notification("Focus Garden", {
-            body: "Focus session complete! Time for a 5-minute break ☁️",
-            icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png" // optional cute icon
+              body: "Focus session complete! Time for a 5-minute break ☁️",
+              icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png"
             });
           } else {
             alert("Focus session complete! Time for a 5-minute break ☁️");
           }
+
           isFocus = false;
           modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
           document.body.classList.replace("focus-mode", "break-mode");
@@ -63,16 +73,17 @@ function startTimer() {
           timeDisplay.style.color = "var(--break-text)";
           modeLabel.style.color = "var(--break-text)";
           time = breakTime;
-          startTimer();
+          startTimer(); // auto-start break
         } else {
           if (Notification.permission === "granted") {
             new Notification("Focus Garden", {
-            body: "Break over! Back to focus 📖",
-            icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png" // optional cute icon
+              body: "Break over! Back to focus 📖",
+              icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png"
             });
           } else {
             alert("Break over! Back to focus 📖");
           }
+
           isFocus = true;
           modeLabel.innerHTML = 'Focus Mode <i class="fas fa-book-open"></i>';
           document.body.classList.replace("break-mode", "focus-mode");
@@ -83,7 +94,7 @@ function startTimer() {
           updateDisplay();
         }
       }
-    }, 1000);
+    }, 500); // checks twice per second for smoother accuracy
   }
 }
 
