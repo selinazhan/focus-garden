@@ -103,6 +103,5 @@ body.break-mode button:hover {
 .sessions {
   font-size: 14px;
   color: var(--accent); /* darker tone */
-  margin-top: 1px;
   font-weight: 500;
 }
