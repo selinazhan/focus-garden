@@ -95,7 +95,7 @@ function startTimer() {
           document.body.classList.replace("focus-mode", "break-mode");
           updateColors();
           timeDisplay.style.color = "var(--break-text)";
-          modeLabel.style.color = "var(--break-text)";
+          modeLabel.style.color = "var(--break-mode-label)";
           time = breakTime;
           startTimer(); // auto-start break
         } else {
