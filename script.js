@@ -4,6 +4,9 @@ let time = focusTime;
 let timer;
 let running = false;
 let isFocus = true;
+let sessionsCompleted = parseInt(localStorage.getItem("sessionsCompleted")) || 0;
+let lastSessionDate = localStorage.getItem("lastSessionDate") || null;
+let streak = parseInt(localStorage.getItem("streak")) || 0;
 
 const timeDisplay = document.getElementById("time");
 const startBtn = document.getElementById("start");
@@ -65,7 +68,26 @@ function startTimer() {
           } else {
             alert("Focus session complete! Time for a 5-minute break ☁️");
           }
+          // track completed sessions and streak
+          sessionsCompleted++;
+          localStorage.setItem("sessionsCompleted", sessionsCompleted);
 
+          // streak logic: if user already studied today, don't double-count
+          const today = new Date().toDateString();
+          if (lastSessionDate !== today) {
+            if (lastSessionDate) {
+              // check if yesterday was last session
+              const yesterday = new Date(Date.now() - 86400000).toDateString();
+              streak = (lastSessionDate === yesterday) ? streak + 1 : 1;
+            } else {
+              streak = 1;
+            }
+            lastSessionDate = today;
+            localStorage.setItem("streak", streak);
+            localStorage.setItem("lastSessionDate", lastSessionDate);
+          }
+          // update text on screen
+          document.getElementById("streak").textContent = streak;
           isFocus = false;
           modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
           document.body.classList.replace("focus-mode", "break-mode");
@@ -120,4 +142,4 @@ resetBtn.addEventListener("click", () => {
 });
 
 updateDisplay();
-
+document.getElementById("streak").textContent = streak;
