@@ -92,3 +92,13 @@ body.break-mode button:hover {
   margin: 20px 0;
 }
 
+.streak, .sessions {
+  font-size: 16px;
+  color: var(--accent);
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.streak {
+  margin-bottom: 4px;
+}

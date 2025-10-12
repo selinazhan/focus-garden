@@ -27,6 +27,7 @@ function updateColors() {
   document.querySelector("h1").style.color = newColor;
   document.querySelector(".subtitle").style.color = newColor;
   document.querySelector(".streak").style.color = newColor;
+  document.querySelector(".sessions").style.color = newColor;
   timeDisplay.style.color = newColor;
   modeLabel.style.color = newColor;
 }
@@ -88,6 +89,7 @@ function startTimer() {
           }
           // update text on screen
           document.getElementById("streak").textContent = streak;
+          document.getElementById("sessions").textContent = sessionsCompleted;
           isFocus = false;
           modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
           document.body.classList.replace("focus-mode", "break-mode");
@@ -143,3 +145,4 @@ resetBtn.addEventListener("click", () => {
 
 updateDisplay();
 document.getElementById("streak").textContent = streak;
+document.getElementById("sessions").textContent = sessionsCompleted;
