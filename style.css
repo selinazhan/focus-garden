@@ -3,9 +3,10 @@
   --break-bg: #e8f5ff;
 
   --focus-text: #44524a;  /* calm green-gray */
-  --break-text: #7da7c5;  /* soft muted blue */
+  --break-text: #49769c;  /* soft muted blue */
 
   --accent: #b4c8b8;
+  --break-mode-label: #7da7c5; /* light pastel blue just for the break header */
 
   --button: #a5c9a1;
   --button-hover: #8fbf8e;
@@ -93,7 +94,7 @@ body.break-mode button:hover {
 }
 
 .streak, .sessions {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--focus-text); /* darker tone */
   margin-top: 10px;
