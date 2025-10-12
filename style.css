@@ -93,13 +93,16 @@ body.break-mode button:hover {
   margin: 20px 0;
 }
 
-.streak, .sessions {
+.streak{
   font-size: 14px;
   color: var(--accent); /* darker tone */
-  margin-top: 18px;
+  margin-top: 20px;
   font-weight: 500;
 }
 
-.streak {
-  margin-bottom: 4px;
+.sessions {
+  font-size: 14px;
+  color: var(--accent); /* darker tone */
+  margin-top: 8px;
+  font-weight: 500;
 }
