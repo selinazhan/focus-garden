@@ -97,7 +97,7 @@ body.break-mode button:hover {
   font-size: 14px;
   font-weight: 600;
   color: var(--focus-text); /* darker tone */
-  margin-top: 10px;
+  margin-top: 12px;
   font-weight: 500;
 }
 
