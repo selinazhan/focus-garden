@@ -95,9 +95,8 @@ body.break-mode button:hover {
 
 .streak, .sessions {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--focus-text); /* darker tone */
-  margin-top: 15px;
+  color: var(--accent); /* darker tone */
+  margin-top: 18px;
   font-weight: 500;
 }
 

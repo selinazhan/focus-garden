@@ -26,8 +26,6 @@ function updateColors() {
 
   document.querySelector("h1").style.color = newColor;
   document.querySelector(".subtitle").style.color = newColor;
-  document.querySelector(".streak").style.color = newColor;
-  document.querySelector(".sessions").style.color = newColor;
   timeDisplay.style.color = newColor;
   modeLabel.style.color = newColor;
 }
@@ -96,6 +94,8 @@ function startTimer() {
           updateColors();
           timeDisplay.style.color = "var(--break-text)";
           modeLabel.style.color = "var(--break-mode-label)";
+          document.querySelector(".streak").style.color = "var(--break-mode-label)";
+          document.querySelector(".sessions").style.color = "var(--break-mode-label)";
           time = breakTime;
           startTimer(); // auto-start break
         } else {
@@ -114,6 +114,8 @@ function startTimer() {
           updateColors();
           timeDisplay.style.color = "var(--focus-text)";
           modeLabel.style.color = "var(--accent)";
+          document.querySelector(".streak").style.color = "var(--accent)";
+          document.querySelector(".sessions").style.color = "var(--accent)";
           time = focusTime;
           updateDisplay();
         }
@@ -138,6 +140,8 @@ resetBtn.addEventListener("click", () => {
   updateColors();
   timeDisplay.style.color = "var(--focus-text)";
   modeLabel.style.color = "var(--accent)";
+  document.querySelector(".streak").style.color = "var(--accent)";
+  document.querySelector(".sessions").style.color = "var(--accent)";
   modeLabel.innerHTML = 'Focus Mode <i class="fas fa-book-open"></i>';
   time = focusTime;
   updateDisplay();
