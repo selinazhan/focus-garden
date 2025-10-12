@@ -96,7 +96,7 @@ body.break-mode button:hover {
 .streak{
   font-size: 14px;
   color: var(--accent); /* darker tone */
-  margin-top: 30px;
+  margin-top: 27px;
   font-weight: 500;
 }
 
