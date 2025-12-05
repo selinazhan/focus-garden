@@ -1,5 +1,5 @@
-let focusTime = 10; // testing; later 25 * 60
-let breakTime = 10; // testing; later 5 * 60
+let focusTime = 10;
+let breakTime = 10;
 let time = focusTime;
 let timer;
 let running = false;
@@ -18,65 +18,13 @@ let currentPage = 0;
 let dragStartIndex = null;
 let dragEndIndex = null;
 
-/* SETTINGS + DAILY DATA */
-
-let settings = {
-  sound: localStorage.getItem("settings_sound") !== "false",
-  darkMode: localStorage.getItem("settings_darkMode") === "true",
-  notifications: localStorage.getItem("settings_notifications") !== "false"
-};
-
-let dailyData = JSON.parse(localStorage.getItem("dailyData")) || {};
-let lastSummaryShownDate = localStorage.getItem("lastSummaryShownDate") || null;
-
-/* DOM */
-
 const timeDisplay = document.getElementById("time");
 const modeLabel = document.getElementById("mode-label");
-const overlayEl = document.getElementById("overlay");
-const settingsModal = document.getElementById("settings-modal");
-const summaryModal = document.getElementById("summary-modal");
-const taskListEl = document.getElementById("task-list");
 
 document.body.classList.add("focus-mode");
-if (settings.darkMode) {
-  document.body.classList.add("dark-mode");
-}
 
-/* SOUNDS */
-
-const sounds = {
-  start: new Audio("sounds/start.mp3"),
-  focusEnd: new Audio("sounds/focus-end.mp3"),
-  breakEnd: new Audio("sounds/break-end.mp3"),
-  plantComplete: new Audio("sounds/plant-complete.mp3"),
-  taskAdd: new Audio("sounds/task-add.mp3"),
-  taskDelete: new Audio("sounds/task-delete.mp3"),
-  taskComplete: new Audio("sounds/task-complete.mp3")
-};
-
-function playSound(name) {
-  if (!settings.sound) return;
-  const audio = sounds[name];
-  if (!audio) return;
-  audio.currentTime = 0;
-  audio.play().catch(() => {});
-}
-
-/* HELPERS FOR DATES */
-
-function getTodayKey() {
-  return new Date().toDateString();
-}
-
-function getYesterdayKey() {
-  return new Date(Date.now() - 86400000).toDateString();
-}
-
-function ensureDailyEntry(dateKey) {
-  if (!dailyData[dateKey]) {
-    dailyData[dateKey] = { sessions: 0, tasksCompleted: 0 };
-  }
+if ("Notification" in window) {
+  Notification.requestPermission();
 }
 
 /* -------------------------- PLANT STAGES ---------------------------- */
@@ -112,26 +60,6 @@ function updatePlantDisplay() {
   }
 }
 
-function triggerPlantAnimation(isComplete) {
-  const plantCard = document.querySelector(".current-plant");
-  const plantEmoji = document.querySelector(".plant-visual");
-  const plantStageEl = document.querySelector(".plant-stage");
-
-  plantEmoji.classList.add("plant-pop");
-  plantStageEl.classList.add("stage-change");
-  plantCard.classList.add("plant-card-pop");
-  if (isComplete) {
-    plantCard.classList.add("plant-confetti");
-  }
-
-  setTimeout(() => {
-    plantEmoji.classList.remove("plant-pop");
-    plantStageEl.classList.remove("stage-change");
-    plantCard.classList.remove("plant-card-pop");
-    plantCard.classList.remove("plant-confetti");
-  }, 900);
-}
-
 function completePlant() {
   completedPlants.push("🌳");
   localStorage.setItem("completedPlants", JSON.stringify(completedPlants));
@@ -140,22 +68,9 @@ function completePlant() {
   localStorage.setItem("currentPlantSessions", currentPlantSessions);
 
   updatePlantDisplay();
-
-  // jump to first page and animate newest tree
-  currentPage = 0;
   updateGardenGrid();
-  const firstSlot = document.querySelector(".garden-slot.filled");
-  if (firstSlot) {
-    firstSlot.classList.add("new-tree");
-    setTimeout(() => firstSlot.classList.remove("new-tree"), 800);
-  }
 
-  triggerPlantAnimation(true);
-  playSound("plantComplete");
-
-  if (settings.notifications &&
-      "Notification" in window &&
-      Notification.permission === "granted") {
+  if (Notification.permission === "granted") {
     new Notification("Focus Garden", {
       body: "🎉 Your tree is complete! It's been added to your garden.",
       icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png"
@@ -170,7 +85,7 @@ function updateGardenGrid() {
   grid.innerHTML = "";
 
   const plantsPerPage = 9;
-  const totalPages = Math.ceil(completedPlants.length / plantsPerPage) || 1;
+  const totalPages = Math.ceil(completedPlants.length / plantsPerPage);
 
   const reversedPlants = [...completedPlants].reverse();
   const startIdx = currentPage * plantsPerPage;
@@ -193,6 +108,7 @@ function updateGardenGrid() {
   if (completedPlants.length === 0) {
     pageInfo.textContent = "No plants yet";
   } else {
+    const totalPages = Math.ceil(completedPlants.length / plantsPerPage);
     pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
   }
 
@@ -209,7 +125,7 @@ document.getElementById("prev-page").addEventListener("click", () => {
 });
 
 document.getElementById("next-page").addEventListener("click", () => {
-  const totalPages = Math.ceil(completedPlants.length / 9) || 1;
+  const totalPages = Math.ceil(completedPlants.length / 9);
   if (currentPage < totalPages - 1) {
     currentPage++;
     updateGardenGrid();
@@ -241,8 +157,6 @@ function startTimer() {
   running = true;
   const endTime = Date.now() + time * 1000;
 
-  playSound("start");
-
   timer = setInterval(() => {
     const remaining = Math.round((endTime - Date.now()) / 1000);
 
@@ -255,21 +169,14 @@ function startTimer() {
       time = 0;
       updateDisplay();
 
-      if (isFocus) {
-        handleFocusComplete();
-      } else {
-        handleBreakComplete();
-      }
+      if (isFocus) handleFocusComplete();
+      else handleBreakComplete();
     }
   }, 500);
 }
 
 function handleFocusComplete() {
-  playSound("focusEnd");
-
-  if (settings.notifications &&
-      "Notification" in window &&
-      Notification.permission === "granted") {
+  if (Notification.permission === "granted") {
     new Notification("Focus Garden", {
       body: "Focus session complete! Time for a break ☁️",
       icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png"
@@ -278,6 +185,7 @@ function handleFocusComplete() {
 
   sessionsCompleted++;
   currentPlantSessions++;
+
   localStorage.setItem("sessionsCompleted", sessionsCompleted);
   localStorage.setItem("currentPlantSessions", currentPlantSessions);
 
@@ -295,17 +203,9 @@ function handleFocusComplete() {
     localStorage.setItem("lastSessionDate", lastSessionDate);
   }
 
-  // update dailyData
-  const todayKey = getTodayKey();
-  ensureDailyEntry(todayKey);
-  dailyData[todayKey].sessions += 1;
-  localStorage.setItem("dailyData", JSON.stringify(dailyData));
-
   document.getElementById("streak").textContent = streak;
   document.getElementById("sessions").textContent = sessionsCompleted;
-
   updatePlantDisplay();
-  triggerPlantAnimation(false);
 
   isFocus = false;
   modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
@@ -316,11 +216,7 @@ function handleFocusComplete() {
 }
 
 function handleBreakComplete() {
-  playSound("breakEnd");
-
-  if (settings.notifications &&
-      "Notification" in window &&
-      Notification.permission === "granted") {
+  if (Notification.permission === "granted") {
     new Notification("Focus Garden", {
       body: "Break over! Back to focus 📖",
       icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png"
@@ -364,16 +260,12 @@ document.getElementById("reset-stats-btn").addEventListener("click", () => {
   completedPlants = [];
   lastSessionDate = null;
   currentPage = 0;
-  dailyData = {};
-  lastSummaryShownDate = null;
 
   localStorage.setItem("sessionsCompleted", "0");
   localStorage.setItem("streak", "0");
   localStorage.setItem("currentPlantSessions", "0");
   localStorage.setItem("completedPlants", JSON.stringify([]));
   localStorage.removeItem("lastSessionDate");
-  localStorage.setItem("dailyData", JSON.stringify(dailyData));
-  localStorage.removeItem("lastSummaryShownDate");
 
   document.getElementById("streak").textContent = "0";
   document.getElementById("sessions").textContent = "0";
@@ -409,16 +301,7 @@ function renderTasks() {
   });
 }
 
-/* increment daily tasks completed when a task moves from incomplete to complete */
-
-function incrementTasksCompletedToday() {
-  const todayKey = getTodayKey();
-  ensureDailyEntry(todayKey);
-  dailyData[todayKey].tasksCompleted += 1;
-  localStorage.setItem("dailyData", JSON.stringify(dailyData));
-}
-
-/* ---------------------- TASK CLICK ACTIONS ---------------------- */
+const taskListEl = document.getElementById("task-list");
 
 taskListEl.addEventListener("click", (e) => {
   const li = e.target.closest(".task-item");
@@ -427,14 +310,7 @@ taskListEl.addEventListener("click", (e) => {
   const index = parseInt(li.dataset.index);
 
   if (e.target.closest(".task-checkbox")) {
-    const wasCompleted = tasks[index].completed;
     tasks[index].completed = !tasks[index].completed;
-
-    if (!wasCompleted && tasks[index].completed) {
-      incrementTasksCompletedToday();
-      playSound("taskComplete");
-    }
-
     saveTasks();
     renderTasks();
     return;
@@ -442,7 +318,6 @@ taskListEl.addEventListener("click", (e) => {
 
   if (e.target.closest(".task-delete")) {
     tasks.splice(index, 1);
-    playSound("taskDelete");
     saveTasks();
     renderTasks();
     return;
@@ -518,7 +393,6 @@ document.getElementById("add-task-btn").addEventListener("click", () => {
 
   if (text) {
     tasks.push({ text, completed: false });
-    playSound("taskAdd");
     saveTasks();
     renderTasks();
     input.value = "";
@@ -531,108 +405,7 @@ document.getElementById("task-input").addEventListener("keypress", (e) => {
   }
 });
 
-/* ----------------------- SETTINGS MODAL ------------------------ */
-
-function openModal(modalEl) {
-  overlayEl.classList.remove("hidden");
-  modalEl.classList.remove("hidden");
-}
-
-function closeModal(modalEl) {
-  modalEl.classList.add("hidden");
-  if (settingsModal.classList.contains("hidden") &&
-      summaryModal.classList.contains("hidden")) {
-    overlayEl.classList.add("hidden");
-  }
-}
-
-document.getElementById("settings-btn").addEventListener("click", () => {
-  openModal(settingsModal);
-});
-
-document.getElementById("close-settings").addEventListener("click", () => {
-  closeModal(settingsModal);
-});
-
-document.getElementById("close-summary").addEventListener("click", () => {
-  closeModal(summaryModal);
-});
-
-overlayEl.addEventListener("click", () => {
-  closeModal(settingsModal);
-  closeModal(summaryModal);
-});
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeModal(settingsModal);
-    closeModal(summaryModal);
-  }
-});
-
-/* SETTINGS TOGGLES */
-
-const soundToggle = document.getElementById("sound-toggle");
-const darkToggle = document.getElementById("dark-mode-toggle");
-const notifToggle = document.getElementById("notifications-toggle");
-
-soundToggle.checked = settings.sound;
-darkToggle.checked = settings.darkMode;
-notifToggle.checked = settings.notifications;
-
-soundToggle.addEventListener("change", (e) => {
-  settings.sound = e.target.checked;
-  localStorage.setItem("settings_sound", settings.sound);
-});
-
-darkToggle.addEventListener("change", (e) => {
-  settings.darkMode = e.target.checked;
-  localStorage.setItem("settings_darkMode", settings.darkMode);
-  document.body.classList.toggle("dark-mode", settings.darkMode);
-});
-
-notifToggle.addEventListener("change", (e) => {
-  settings.notifications = e.target.checked;
-  localStorage.setItem("settings_notifications", settings.notifications);
-  if (settings.notifications &&
-      "Notification" in window &&
-      Notification.permission === "default") {
-    Notification.requestPermission();
-  }
-});
-
-// request permission on load if notifications enabled and still default
-if (settings.notifications &&
-    "Notification" in window &&
-    Notification.permission === "default") {
-  Notification.requestPermission();
-}
-
-/* -------------------- DAILY SUMMARY POPUP -------------------- */
-
-function maybeShowDailySummary() {
-  const todayKey = getTodayKey();
-  const yesterdayKey = getYesterdayKey();
-
-  if (lastSummaryShownDate === todayKey) return;
-
-  const stats = dailyData[yesterdayKey];
-  if (!stats) return;
-
-  const sessions = stats.sessions || 0;
-  const tasksCompleted = stats.tasksCompleted || 0;
-
-  const summaryText = document.getElementById("summary-text");
-  summaryText.textContent =
-    `Yesterday you completed ${sessions} focus session${sessions === 1 ? "" : "s"} ` +
-    `and checked off ${tasksCompleted} task${tasksCompleted === 1 ? "" : "s"}.`;
-
-  openModal(summaryModal);
-  lastSummaryShownDate = todayKey;
-  localStorage.setItem("lastSummaryShownDate", lastSummaryShownDate);
-}
-
-/* ----------------------- INIT ----------------------- */
+/* -------------------------- INIT -------------------------- */
 
 updateDisplay();
 updatePlantDisplay();
@@ -642,4 +415,16 @@ renderTasks();
 document.getElementById("streak").textContent = streak;
 document.getElementById("sessions").textContent = sessionsCompleted;
 
-maybeShowDailySummary();
+/* ------------------ SETTINGS MODAL ------------------ */
+
+const settingsBtn = document.getElementById("settings-btn");
+const settingsModal = document.getElementById("settings-modal");
+const closeSettings = document.getElementById("close-settings");
+
+settingsBtn.addEventListener("click", () => {
+  settingsModal.classList.remove("hidden");
+});
+
+closeSettings.addEventListener("click", () => {
+  settingsModal.classList.add("hidden");
+});
