@@ -414,3 +414,217 @@ body.break-mode button:hover {
 .task-delete:hover {
   background: #d89696;
 }
+
+/* ============= ANIMATIONS ============= */
+
+/* Floating animation for current plant */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-12px); 
+  }
+}
+
+.plant-visual {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pop animation when plant upgrades */
+@keyframes popGrow {
+  0% { 
+    transform: scale(1); 
+  }
+  30% { 
+    transform: scale(1.3) rotate(-5deg); 
+  }
+  50% { 
+    transform: scale(1.2) rotate(5deg); 
+  }
+  70% { 
+    transform: scale(1.3) rotate(-3deg); 
+  }
+  100% { 
+    transform: scale(1) rotate(0deg); 
+  }
+}
+
+.plant-visual.upgrade-animation {
+  animation: popGrow 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Fly to garden animation */
+@keyframes flyToGarden {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-200px, -100px) scale(0.8) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-400px, -150px) scale(0.3) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.plant-visual.flying {
+  animation: flyToGarden 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Slide in animation for new garden plants */
+@keyframes slideInGarden {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.garden-slot.filled.new {
+  animation: slideInGarden 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Hover bounce for garden plants */
+.garden-slot.filled {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.garden-slot.filled:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Particle effects */
+@keyframes particleFall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: fixed;
+  font-size: 28px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: particleFall 3s ease-out forwards;
+}
+
+/* Pulse animation for stats when they update */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.stat-value.pulse {
+  animation: pulse 0.5s ease-in-out;
+}
+
+/* Gentle hover effects for panels */
+.garden-panel,
+.timer-panel,
+.plant-panel,
+.tasks-panel {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.garden-panel:hover,
+.timer-panel:hover,
+.plant-panel:hover,
+.tasks-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* Button press animation */
+button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Progress bar shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--button) 0%,
+    var(--button-hover) 25%,
+    var(--button) 50%,
+    var(--button-hover) 75%,
+    var(--button) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+body.break-mode .progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--button-break) 0%,
+    var(--button-break-hover) 25%,
+    var(--button-break) 50%,
+    var(--button-break-hover) 75%,
+    var(--button-break) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Task item slide in */
+@keyframes slideInTask {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.task-item {
+  animation: slideInTask 0.3s ease-out;
+}
+
+/* Smooth transitions for mode switches */
+body {
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#time,
+#mode-label,
+.stat-value,
+.stat-label,
+.plant-stage,
+.plant-progress {
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}

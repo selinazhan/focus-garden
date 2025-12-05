@@ -1,5 +1,5 @@
-let focusTime = 10;
-let breakTime = 10;
+let focusTime = 25 * 60;
+let breakTime = 5 * 60;
 let time = focusTime;
 let timer;
 let running = false;
@@ -45,9 +45,32 @@ function getCurrentPlantStage() {
   return plantStages[0];
 }
 
-function updatePlantDisplay() {
+function createParticles() {
+  const emojis = ['✨', '🌟', '⭐', '💚', '🌱', '🎉', '🌸'];
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      particle.style.left = (Math.random() * window.innerWidth) + 'px';
+      particle.style.top = '-50px';
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 3000);
+    }, i * 60);
+  }
+}
+
+function updatePlantDisplay(shouldAnimate = false) {
   const stage = getCurrentPlantStage();
-  document.getElementById("plant-emoji").textContent = stage.emoji;
+  
+  const plantEmoji = document.getElementById("plant-emoji");
+  
+  if (shouldAnimate) {
+    plantEmoji.classList.add("upgrade-animation");
+    setTimeout(() => plantEmoji.classList.remove("upgrade-animation"), 600);
+  }
+  
+  plantEmoji.textContent = stage.emoji;
   document.getElementById("plant-stage").textContent = stage.name;
   document.getElementById("plant-progress").textContent =
     `${currentPlantSessions}/25 sessions`;
@@ -61,26 +84,35 @@ function updatePlantDisplay() {
 }
 
 function completePlant() {
-  completedPlants.push("🌳");
-  localStorage.setItem("completedPlants", JSON.stringify(completedPlants));
+  const plantEmoji = document.getElementById("plant-emoji");
+  
+  // Add flying animation
+  plantEmoji.classList.add("flying");
+  createParticles();
+  
+  setTimeout(() => {
+    completedPlants.push("🌳");
+    localStorage.setItem("completedPlants", JSON.stringify(completedPlants));
 
-  currentPlantSessions = 0;
-  localStorage.setItem("currentPlantSessions", currentPlantSessions);
+    currentPlantSessions = 0;
+    localStorage.setItem("currentPlantSessions", currentPlantSessions);
 
-  updatePlantDisplay();
-  updateGardenGrid();
+    plantEmoji.classList.remove("flying");
+    updatePlantDisplay(true);
+    updateGardenGrid(true);
 
-  if (Notification.permission === "granted") {
-    new Notification("Focus Garden", {
-      body: "🎉 Your tree is complete! It's been added to your garden.",
-      icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png"
-    });
-  }
+    if (Notification.permission === "granted") {
+      new Notification("Focus Garden", {
+        body: "🎉 Your tree is complete! It's been added to your garden.",
+        icon: "https://cdn-icons-png.flaticon.com/512/427/427735.png"
+      });
+    }
+  }, 1000);
 }
 
 /* ------------------------ GARDEN GRID ------------------------ */
 
-function updateGardenGrid() {
+function updateGardenGrid(animateNew = false) {
   const grid = document.getElementById("garden-grid");
   grid.innerHTML = "";
 
@@ -91,9 +123,14 @@ function updateGardenGrid() {
   const startIdx = currentPage * plantsPerPage;
   const plantsOnPage = reversedPlants.slice(startIdx, startIdx + plantsPerPage);
 
-  plantsOnPage.forEach(plant => {
+  plantsOnPage.forEach((plant, index) => {
     const slot = document.createElement("div");
     slot.className = "garden-slot filled";
+    
+    if (animateNew && index === 0 && currentPage === 0) {
+      slot.classList.add("new");
+    }
+    
     slot.textContent = plant;
     grid.appendChild(slot);
   });
@@ -185,6 +222,8 @@ function handleFocusComplete() {
     });
   }
 
+  const oldStage = getCurrentPlantStage().name;
+  
   sessionsCompleted++;
   currentPlantSessions++;
   localStorage.setItem("sessionsCompleted", sessionsCompleted);
@@ -204,9 +243,25 @@ function handleFocusComplete() {
     localStorage.setItem("lastSessionDate", lastSessionDate);
   }
 
+  // Pulse animation for stats
+  document.getElementById("streak").classList.add("pulse");
+  document.getElementById("sessions").classList.add("pulse");
+  setTimeout(() => {
+    document.getElementById("streak").classList.remove("pulse");
+    document.getElementById("sessions").classList.remove("pulse");
+  }, 500);
+
   document.getElementById("streak").textContent = streak;
   document.getElementById("sessions").textContent = sessionsCompleted;
-  updatePlantDisplay();
+  
+  const newStage = getCurrentPlantStage().name;
+  const didUpgrade = oldStage !== newStage;
+  
+  updatePlantDisplay(didUpgrade);
+  
+  if (didUpgrade) {
+    createParticles();
+  }
 
   isFocus = false;
   modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
