@@ -74,7 +74,7 @@ body.break-mode {
   }
 }
 
-/* LEFT PANEL */
+/* LEFT PANEL - GARDEN GRID */
 .garden-panel {
   background: var(--white);
   padding: 20px;
@@ -145,7 +145,7 @@ body.break-mode {
   font-weight: 600;
 }
 
-/* TIMER PANEL */
+/* CENTER PANEL - TIMER */
 .timer-panel {
   background: var(--white);
   padding: 30px;
@@ -199,6 +199,32 @@ body.break-mode button:hover {
   background-color: var(--button-break-hover);
 }
 
+/* stats under timer */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--focus-text);
+}
+
 #reset-stats-btn {
   margin-top: 15px;
   background-color: #e8aeae;
@@ -210,7 +236,7 @@ body.break-mode button:hover {
   background-color: #d89696;
 }
 
-/* RIGHT PANEL */
+/* RIGHT PANEL - CURRENT PLANT */
 .plant-panel {
   background: var(--white);
   padding: 20px;
@@ -269,7 +295,7 @@ body.break-mode button:hover {
   transition: width 0.3s;
 }
 
-/* TASK LIST */
+/* TASKS SECTION */
 .tasks-panel {
   background: var(--white);
   padding: 20px;
@@ -342,15 +368,11 @@ body.break-mode button:hover {
   text-decoration: line-through;
 }
 
-/* pointer events fix */
-.task-item * {
-  pointer-events: none;
-}
-
 .task-checkbox {
   width: 20px;
   height: 20px;
   margin-right: 12px;
+  cursor: pointer;
 }
 
 .task-text {
@@ -370,8 +392,13 @@ body.break-mode button:hover {
   border: none;
   padding: 6px 10px;
   border-radius: 6px;
+  cursor: pointer;
   font-size: 12px;
   margin-right: 8px;
+}
+
+.task-edit:hover {
+  background: #aebfa9;
 }
 
 .task-delete {
@@ -380,6 +407,7 @@ body.break-mode button:hover {
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
+  cursor: pointer;
   font-size: 12px;
 }
 

@@ -1,4 +1,4 @@
-let focusTime = 10; 
+let focusTime = 10;
 let breakTime = 10;
 let time = focusTime;
 let timer;
@@ -20,6 +20,7 @@ let dragEndIndex = null;
 
 const timeDisplay = document.getElementById("time");
 const modeLabel = document.getElementById("mode-label");
+
 document.body.classList.add("focus-mode");
 
 if ("Notification" in window) {
@@ -54,7 +55,9 @@ function updatePlantDisplay() {
   const progress = (currentPlantSessions / 25) * 100;
   document.getElementById("progress-fill").style.width = `${progress}%`;
 
-  if (currentPlantSessions >= 25) completePlant();
+  if (currentPlantSessions >= 25) {
+    completePlant();
+  }
 }
 
 function completePlant() {
@@ -165,8 +168,11 @@ function startTimer() {
       time = 0;
       updateDisplay();
 
-      if (isFocus) handleFocusComplete();
-      else handleBreakComplete();
+      if (isFocus) {
+        handleFocusComplete();
+      } else {
+        handleBreakComplete();
+      }
     }
   }, 500);
 }
@@ -245,7 +251,9 @@ document.getElementById("reset").addEventListener("click", () => {
 /* ------------------------- RESET STATS ------------------------- */
 
 document.getElementById("reset-stats-btn").addEventListener("click", () => {
-  if (!confirm("Reset streak and sessions?")) return;
+  if (!confirm("Are you sure you want to reset your streak and sessions? This cannot be undone.")) {
+    return;
+  }
 
   sessionsCompleted = 0;
   streak = 0;
@@ -284,10 +292,8 @@ function renderTasks() {
     li.setAttribute("draggable", "true");
 
     li.innerHTML = `
-      <input type="checkbox" class="task-checkbox" data-index="${index}" ${
-        task.completed ? "checked" : ""
-      }>
-      <span class="task-text" data-index="${index}">${task.text}</span>
+      <input type="checkbox" class="task-checkbox" ${task.completed ? "checked" : ""}>
+      <span class="task-text">${task.text}</span>
       <button class="task-edit"><i class="fas fa-pencil-alt"></i></button>
       <button class="task-delete">Delete</button>
     `;
@@ -298,17 +304,22 @@ function renderTasks() {
 
 /* ---------------------- TASK CLICK ACTIONS ---------------------- */
 
-document.getElementById("task-list").addEventListener("click", (e) => {
-  const index = e.target.dataset.index;
+const taskListEl = document.getElementById("task-list");
 
-  if (e.target.classList.contains("task-checkbox")) {
+taskListEl.addEventListener("click", (e) => {
+  const li = e.target.closest(".task-item");
+  if (!li) return;
+
+  const index = parseInt(li.dataset.index);
+
+  if (e.target.closest(".task-checkbox")) {
     tasks[index].completed = !tasks[index].completed;
     saveTasks();
     renderTasks();
     return;
   }
 
-  if (e.target.classList.contains("task-delete")) {
+  if (e.target.closest(".task-delete")) {
     tasks.splice(index, 1);
     saveTasks();
     renderTasks();
@@ -316,7 +327,7 @@ document.getElementById("task-list").addEventListener("click", (e) => {
   }
 
   if (e.target.closest(".task-edit")) {
-    const span = document.querySelector(`.task-text[data-index='${index}']`);
+    const span = li.querySelector(".task-text");
     span.contentEditable = true;
     span.classList.add("editing");
     span.focus();
@@ -326,6 +337,7 @@ document.getElementById("task-list").addEventListener("click", (e) => {
       span.classList.remove("editing");
       tasks[index].text = span.textContent.trim();
       saveTasks();
+      renderTasks();
     };
 
     span.addEventListener("blur", finish, { once: true });
@@ -339,8 +351,6 @@ document.getElementById("task-list").addEventListener("click", (e) => {
 });
 
 /* -------------------- DRAG AND DROP REORDER -------------------- */
-
-const taskListEl = document.getElementById("task-list");
 
 taskListEl.addEventListener("dragstart", (e) => {
   const li = e.target.closest(".task-item");
@@ -374,7 +384,28 @@ taskListEl.addEventListener("drop", () => {
   saveTasks();
   renderTasks();
 
-  dragStartIndex = dragEndIndex = null;
+  dragStartIndex = null;
+  dragEndIndex = null;
+});
+
+/* ----------------------- ADD TASK INPUT ----------------------- */
+
+document.getElementById("add-task-btn").addEventListener("click", () => {
+  const input = document.getElementById("task-input");
+  const text = input.value.trim();
+
+  if (text) {
+    tasks.push({ text, completed: false });
+    saveTasks();
+    renderTasks();
+    input.value = "";
+  }
+});
+
+document.getElementById("task-input").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    document.getElementById("add-task-btn").click();
+  }
 });
 
 /* ----------------------- INIT ----------------------- */
