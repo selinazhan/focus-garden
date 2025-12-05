@@ -74,7 +74,7 @@ body.break-mode {
   }
 }
 
-/* GARDEN GRID */
+/* LEFT PANEL - GARDEN GRID */
 .garden-panel {
   background: var(--white);
   padding: 20px;
@@ -145,7 +145,7 @@ body.break-mode {
   font-weight: 600;
 }
 
-/* TIMER PANEL */
+/* CENTER PANEL - TIMER */
 .timer-panel {
   background: var(--white);
   padding: 30px;
@@ -199,6 +199,7 @@ body.break-mode button:hover {
   background-color: var(--button-break-hover);
 }
 
+/* stats under timer */
 .stats {
   display: flex;
   justify-content: space-around;
@@ -235,7 +236,7 @@ body.break-mode button:hover {
   background-color: #d89696;
 }
 
-/* PLANT PANEL */
+/* RIGHT PANEL - CURRENT PLANT */
 .plant-panel {
   background: var(--white);
   padding: 20px;
@@ -294,7 +295,7 @@ body.break-mode button:hover {
   transition: width 0.3s;
 }
 
-/* TASK LIST */
+/* TASKS SECTION */
 .tasks-panel {
   background: var(--white);
   padding: 20px;
@@ -412,61 +413,4 @@ body.break-mode button:hover {
 
 .task-delete:hover {
   background: #d89696;
-}
-
-/* ------------------------------------------------------ */
-/* SETTINGS BUTTON + MODAL (SAFE ADDITION)               */
-/* ------------------------------------------------------ */
-
-.settings-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--white);
-  border: 2px solid var(--accent);
-  padding: 10px 12px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 20px;
-  z-index: 2000;
-}
-
-.settings-btn:hover {
-  background: #eef4ee;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.45);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 3000;
-}
-
-.modal-content {
-  background: var(--white);
-  padding: 25px;
-  border-radius: 14px;
-  width: 300px;
-  text-align: center;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-}
-
-.close-btn {
-  margin-top: 15px;
-  padding: 8px 20px;
-  background: var(--button);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
 }

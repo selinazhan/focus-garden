@@ -108,7 +108,6 @@ function updateGardenGrid() {
   if (completedPlants.length === 0) {
     pageInfo.textContent = "No plants yet";
   } else {
-    const totalPages = Math.ceil(completedPlants.length / plantsPerPage);
     pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
   }
 
@@ -169,8 +168,11 @@ function startTimer() {
       time = 0;
       updateDisplay();
 
-      if (isFocus) handleFocusComplete();
-      else handleBreakComplete();
+      if (isFocus) {
+        handleFocusComplete();
+      } else {
+        handleBreakComplete();
+      }
     }
   }, 500);
 }
@@ -185,7 +187,6 @@ function handleFocusComplete() {
 
   sessionsCompleted++;
   currentPlantSessions++;
-
   localStorage.setItem("sessionsCompleted", sessionsCompleted);
   localStorage.setItem("currentPlantSessions", currentPlantSessions);
 
@@ -301,6 +302,8 @@ function renderTasks() {
   });
 }
 
+/* ---------------------- TASK CLICK ACTIONS ---------------------- */
+
 const taskListEl = document.getElementById("task-list");
 
 taskListEl.addEventListener("click", (e) => {
@@ -405,7 +408,7 @@ document.getElementById("task-input").addEventListener("keypress", (e) => {
   }
 });
 
-/* -------------------------- INIT -------------------------- */
+/* ----------------------- INIT ----------------------- */
 
 updateDisplay();
 updatePlantDisplay();
@@ -414,17 +417,3 @@ renderTasks();
 
 document.getElementById("streak").textContent = streak;
 document.getElementById("sessions").textContent = sessionsCompleted;
-
-/* ------------------ SETTINGS MODAL ------------------ */
-
-const settingsBtn = document.getElementById("settings-btn");
-const settingsModal = document.getElementById("settings-modal");
-const closeSettings = document.getElementById("close-settings");
-
-settingsBtn.addEventListener("click", () => {
-  settingsModal.classList.remove("hidden");
-});
-
-closeSettings.addEventListener("click", () => {
-  settingsModal.classList.add("hidden");
-});
