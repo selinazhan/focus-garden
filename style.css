@@ -61,6 +61,23 @@ body.break-mode {
   transition: color 0.3s;
 }
 
+/* ================= HEADER POP UPGRADE ================= */
+
+.header h1 {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow:
+    0 2px 4px rgba(0,0,0,0.15),
+    0 4px 12px rgba(0,0,0,0.10);
+}
+
+.header .subtitle {
+  font-size: 18px;
+  opacity: 0.9;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
 .layout {
   display: grid;
   grid-template-columns: 280px 1fr 280px;
@@ -86,6 +103,20 @@ body.break-mode {
   font-size: 18px;
   margin-bottom: 15px;
   color: var(--accent);
+}
+
+/* ================= SECTION HEADER UPGRADE ================= */
+
+.garden-panel h3,
+.timer-panel h3,
+.plant-panel h3,
+.tasks-panel h3 {
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
 }
 
 .garden-grid {
@@ -145,6 +176,19 @@ body.break-mode {
   font-weight: 600;
 }
 
+/* ================= PANEL DEPTH UPGRADE ================= */
+
+.garden-panel,
+.timer-panel,
+.plant-panel,
+.tasks-panel {
+  background: linear-gradient(145deg, #ffffff, #f4f7f4);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08),
+    0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
 /* CENTER PANEL - TIMER */
 .timer-panel {
   background: var(--white);
@@ -189,6 +233,16 @@ button {
 
 button:hover {
   background-color: var(--button-hover);
+}
+
+/* ================= BUTTON GLOW UPGRADE ================= */
+
+button:hover {
+  box-shadow: 0 0 10px rgba(155, 200, 155, 0.55);
+}
+
+body.break-mode button:hover {
+  box-shadow: 0 0 10px rgba(145, 190, 228, 0.55);
 }
 
 body.break-mode button {
@@ -265,6 +319,14 @@ body.break-mode button:hover {
 .plant-visual {
   font-size: 80px;
   margin-bottom: 15px;
+}
+
+/* ================= PLANT EMOJI GLOW ================= */
+
+.plant-visual {
+  text-shadow:
+    0 0 10px rgba(160, 220, 160, 0.6),
+    0 0 20px rgba(160, 220, 160, 0.3);
 }
 
 .plant-stage {
@@ -503,6 +565,16 @@ body.break-mode button:hover {
 .garden-slot.filled:hover {
   transform: translateY(-8px) scale(1.05);
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* ================= GARDEN BLOOM UPGRADE ================= */
+
+.garden-slot.filled:hover {
+  transform: translateY(-6px) scale(1.06);
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.15),
+    0 4px 10px rgba(0,0,0,0.10);
+  background: linear-gradient(145deg, #f7fff7, #eef8ee);
 }
 
 /* Particle effects */
