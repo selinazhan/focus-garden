@@ -19,7 +19,7 @@
 }
 
 body {
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Besley', serif;
   background-color: var(--focus-bg);
   color: var(--focus-text);
   transition: background-color 0.5s ease;
