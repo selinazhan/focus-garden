@@ -264,7 +264,7 @@ function handleFocusComplete() {
   }
 
   isFocus = false;
-  modeLabel.innerHTML = 'Break Mode <i class="fas fa-cloud-sun"></i>';
+  modeLabel.innerHTML = '<i class="fas fa-cloud-sun"></i> Break Mode';
   document.body.classList.replace("focus-mode", "break-mode");
   updateColors();
   time = breakTime;
@@ -280,7 +280,7 @@ function handleBreakComplete() {
   }
 
   isFocus = true;
-  modeLabel.innerHTML = 'Focus Mode <i class="fas fa-book-open"></i>';
+  modeLabel.innerHTML = '<i class="fas fa-book-open"></i> Focus Mode';
   document.body.classList.replace("break-mode", "focus-mode");
   updateColors();
   time = focusTime;
