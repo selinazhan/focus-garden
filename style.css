@@ -48,34 +48,31 @@ body.break-mode {
 }
 
 .header h1 {
-  font-size: 42px;
-  margin-bottom: 8px;
-  color: var(--focus-text);
-  transition: color 0.3s;
-}
-
-.header .subtitle {
-  font-size: 16px;
-  color: var(--focus-text);
-  opacity: 0.8;
-  transition: color 0.3s;
-}
-
-/* ================= HEADER POP UPGRADE ================= */
-
-.header h1 {
   font-size: 48px;
   font-weight: 800;
   letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: var(--focus-text);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   text-shadow:
     0 2px 4px rgba(0,0,0,0.15),
     0 4px 12px rgba(0,0,0,0.10);
 }
 
+body.break-mode .header h1 {
+  color: var(--break-text);
+}
+
 .header .subtitle {
   font-size: 18px;
   opacity: 0.9;
+  color: var(--focus-text);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+body.break-mode .header .subtitle {
+  color: var(--break-text);
 }
 
 .layout {
@@ -93,29 +90,27 @@ body.break-mode {
 
 /* LEFT PANEL - GARDEN GRID */
 .garden-panel {
-  background: var(--white);
+  background: linear-gradient(145deg, #ffffff, #f4f7f4);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08),
+    0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
   padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .garden-panel h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
-  color: var(--accent);
-}
-
-/* ================= SECTION HEADER UPGRADE ================= */
-
-.garden-panel h3,
-.timer-panel h3,
-.plant-panel h3,
-.tasks-panel h3 {
   font-size: 20px;
   font-weight: 700;
   padding-bottom: 6px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.08);
   margin-bottom: 16px;
+  color: var(--accent);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode .garden-panel h3 {
+  color: var(--break-mode-label);
 }
 
 .garden-grid {
@@ -141,6 +136,11 @@ body.break-mode {
   background: #f3f8f1;
 }
 
+body.break-mode .garden-slot.filled {
+  border: 2px solid var(--break-mode-label);
+  background: #e8f5ff;
+}
+
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -163,6 +163,14 @@ body.break-mode {
   background: var(--button-hover);
 }
 
+body.break-mode .page-btn:not(:disabled) {
+  background: var(--button-break);
+}
+
+body.break-mode .page-btn:hover:not(:disabled) {
+  background: var(--button-break-hover);
+}
+
 .page-btn:disabled {
   background: #d0d0d0;
   cursor: not-allowed;
@@ -173,31 +181,24 @@ body.break-mode {
   font-size: 13px;
   color: var(--accent);
   font-weight: 600;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ================= PANEL DEPTH UPGRADE ================= */
+body.break-mode .page-info {
+  color: var(--break-mode-label);
+}
 
-.garden-panel,
-.timer-panel,
-.plant-panel,
-.tasks-panel {
+/* CENTER PANEL - TIMER */
+.timer-panel {
   background: linear-gradient(145deg, #ffffff, #f4f7f4);
   box-shadow:
     0 4px 12px rgba(0,0,0,0.08),
     0 2px 4px rgba(0,0,0,0.05);
   border: 1px solid rgba(0,0,0,0.05);
-}
-
-/* CENTER PANEL - TIMER */
-.timer-panel {
-  background: var(--white);
   padding: 30px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   text-align: center;
 }
-
-/* ================= CENTER PANEL MODE LABEL UPGRADE ================= */
 
 #mode-label {
   font-size: 20px;
@@ -207,14 +208,22 @@ body.break-mode {
   padding-bottom: 0;
   border-bottom: none;
   color: var(--accent);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+body.break-mode #mode-label {
+  color: var(--break-mode-label);
+}
 
 #time {
   font-size: 64px;
   margin: 20px 0;
   color: var(--focus-text);
-  transition: color 0.3s;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode #time {
+  color: var(--break-text);
 }
 
 .buttons {
@@ -239,16 +248,7 @@ button {
 
 button:hover {
   background-color: var(--button-hover);
-}
-
-/* ================= BUTTON GLOW UPGRADE ================= */
-
-button:hover {
   box-shadow: 0 0 10px rgba(155, 200, 155, 0.55);
-}
-
-body.break-mode button:hover {
-  box-shadow: 0 0 10px rgba(145, 190, 228, 0.55);
 }
 
 body.break-mode button {
@@ -257,6 +257,7 @@ body.break-mode button {
 
 body.break-mode button:hover {
   background-color: var(--button-break-hover);
+  box-shadow: 0 0 10px rgba(145, 190, 228, 0.55);
 }
 
 /* stats under timer */
@@ -277,12 +278,22 @@ body.break-mode button:hover {
   color: var(--accent);
   margin-bottom: 5px;
   font-weight: 600;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode .stat-label {
+  color: var(--break-mode-label);
 }
 
 .stat-value {
   font-size: 24px;
   font-weight: 700;
   color: var(--focus-text);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode .stat-value {
+  color: var(--break-text);
 }
 
 #reset-stats-btn {
@@ -294,20 +305,32 @@ body.break-mode button:hover {
 
 #reset-stats-btn:hover {
   background-color: #d89696;
+  box-shadow: 0 0 10px rgba(232, 174, 174, 0.55);
 }
 
 /* RIGHT PANEL - CURRENT PLANT */
 .plant-panel {
-  background: var(--white);
+  background: linear-gradient(145deg, #ffffff, #f4f7f4);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08),
+    0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
   padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .plant-panel h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
   color: var(--accent);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode .plant-panel h3 {
+  color: var(--break-mode-label);
 }
 
 .current-plant {
@@ -325,11 +348,6 @@ body.break-mode button:hover {
 .plant-visual {
   font-size: 80px;
   margin-bottom: 15px;
-}
-
-/* ================= PLANT EMOJI GLOW ================= */
-
-.plant-visual {
   text-shadow:
     0 0 10px rgba(160, 220, 160, 0.6),
     0 0 20px rgba(160, 220, 160, 0.3);
@@ -340,12 +358,22 @@ body.break-mode button:hover {
   font-weight: 600;
   color: var(--accent);
   margin-bottom: 5px;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode .plant-stage {
+  color: var(--break-mode-label);
 }
 
 .plant-progress {
   font-size: 13px;
   color: var(--focus-text);
   opacity: 0.7;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode .plant-progress {
+  color: var(--break-text);
 }
 
 .progress-bar {
@@ -365,10 +393,13 @@ body.break-mode button:hover {
 
 /* TASKS SECTION */
 .tasks-panel {
-  background: var(--white);
+  background: linear-gradient(145deg, #ffffff, #f4f7f4);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08),
+    0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
   padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   margin-top: 20px;
   max-width: 800px;
   margin-left: auto;
@@ -376,9 +407,17 @@ body.break-mode button:hover {
 }
 
 .tasks-panel h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
   color: var(--accent);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.break-mode .tasks-panel h3 {
+  color: var(--break-mode-label);
 }
 
 .task-input-container {
@@ -399,6 +438,10 @@ body.break-mode button:hover {
 #task-input:focus {
   outline: none;
   border-color: var(--accent);
+}
+
+body.break-mode #task-input:focus {
+  border-color: var(--break-mode-label);
 }
 
 .task-list {
@@ -422,6 +465,10 @@ body.break-mode button:hover {
 
 .task-item:hover {
   background: #f3f8f1;
+}
+
+body.break-mode .task-item:hover {
+  background: #e8f5ff;
 }
 
 .task-item.dragging {
@@ -454,6 +501,10 @@ body.break-mode button:hover {
   padding: 2px;
 }
 
+body.break-mode .task-text.editing {
+  outline-color: var(--break-mode-label);
+}
+
 .task-edit {
   background: #c8d7c5;
   color: white;
@@ -467,6 +518,14 @@ body.break-mode button:hover {
 
 .task-edit:hover {
   background: #aebfa9;
+}
+
+body.break-mode .task-edit {
+  background: #a3c9e0;
+}
+
+body.break-mode .task-edit:hover {
+  background: #8bb6d4;
 }
 
 .task-delete {
@@ -569,18 +628,15 @@ body.break-mode button:hover {
 }
 
 .garden-slot.filled:hover {
-  transform: translateY(-8px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-/* ================= GARDEN BLOOM UPGRADE ================= */
-
-.garden-slot.filled:hover {
   transform: translateY(-6px) scale(1.06);
   box-shadow:
     0 8px 20px rgba(0,0,0,0.15),
     0 4px 10px rgba(0,0,0,0.10);
   background: linear-gradient(145deg, #f7fff7, #eef8ee);
+}
+
+body.break-mode .garden-slot.filled:hover {
+  background: linear-gradient(145deg, #f0f9ff, #e0f2fe);
 }
 
 /* Particle effects */
