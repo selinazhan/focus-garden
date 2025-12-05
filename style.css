@@ -383,3 +383,28 @@ body.break-mode button:hover {
 .task-delete:hover {
   background: #d89696;
 }
+
+.task-edit {
+  background: #c8d7c5;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.task-edit:hover {
+  background: #aebfa9;
+}
+
+.task-text.editing {
+  outline: 2px solid var(--accent);
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.task-item.dragging {
+  opacity: 0.4;
+}

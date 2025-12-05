@@ -11,6 +11,7 @@ let currentPlantSessions = parseInt(localStorage.getItem("currentPlantSessions")
 let completedPlants = JSON.parse(localStorage.getItem("completedPlants")) || [];
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let currentPage = 0;
+let dragStartIndex = null;
 
 const timeDisplay = document.getElementById("time");
 const startBtn = document.getElementById("start");
@@ -280,12 +281,18 @@ function renderTasks() {
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
     li.className = `task-item ${task.completed ? "completed" : ""}`;
-    
-    li.innerHTML = `
-      <input type="checkbox" class="task-checkbox" ${task.completed ? "checked" : ""} data-index="${index}">
-      <span class="task-text">${task.text}</span>
-      <button class="task-delete" data-index="${index}">Delete</button>
-    `;
+    li.setAttribute("draggable", "true");
+    li.dataset.index = index;
+
+  li.innerHTML = `
+    <input type="checkbox" class="task-checkbox" ${task.completed ? "checked" : ""} data-index="${index}">
+    <span class="task-text" data-index="${index}">${task.text}</span>
+    <button class="task-edit" data-index="${index}">
+      <i class="fas fa-pencil-alt"></i>
+    </button>
+    <button class="task-delete" data-index="${index}">Delete</button>
+  `;
+
     
     taskList.appendChild(li);
   });
@@ -323,6 +330,69 @@ document.getElementById("task-list").addEventListener("click", (e) => {
     saveTasks();
     renderTasks();
   }
+
+  if (e.target.closest(".task-edit")) {
+  const btn = e.target.closest(".task-edit");
+  const index = parseInt(btn.dataset.index);
+  const span = document.querySelector(`.task-text[data-index='${index}']`);
+
+  // Make it editable
+  span.contentEditable = true;
+  span.focus();
+
+  // Highlight for UX
+  span.classList.add("editing");
+
+  // Save on Enter or when losing focus
+  const finishEditing = () => {
+    span.contentEditable = false;
+    span.classList.remove("editing");
+    tasks[index].text = span.textContent.trim();
+    saveTasks();
+  };
+
+  span.addEventListener("blur", finishEditing, { once: true });
+
+  span.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      span.blur();
+    }
+  });
+
+  document.getElementById("task-list").addEventListener("dragstart", (e) => {
+  const li = e.target.closest(".task-item");
+  if (!li) return;
+  dragStartIndex = parseInt(li.dataset.index);
+  li.classList.add("dragging");
+});
+
+document.getElementById("task-list").addEventListener("dragend", (e) => {
+  const li = e.target.closest(".task-item");
+  if (!li) return;
+  li.classList.remove("dragging");
+});
+
+document.getElementById("task-list").addEventListener("dragover", (e) => {
+  e.preventDefault(); // allows drop
+  const li = e.target.closest(".task-item");
+  if (!li) return;
+
+  const dragEndIndex = parseInt(li.dataset.index);
+
+  if (dragStartIndex !== dragEndIndex) {
+    // Swap tasks
+    const temp = tasks[dragStartIndex];
+    tasks[dragStartIndex] = tasks[dragEndIndex];
+    tasks[dragEndIndex] = temp;
+
+    // Save + rerender
+    saveTasks();
+    renderTasks();
+  }
+});
+}
+
 });
 
 // Initialize
