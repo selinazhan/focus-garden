@@ -11,7 +11,12 @@
 <body>
   <div class="main-container">
     <div class="header">
-      <h1><i class="fas fa-seedling"></i> Focus Garden</h1>
+      <div class="header-top">
+        <h1><i class="fas fa-seedling"></i> Focus Garden</h1>
+        <button id="settings-btn" class="icon-button" aria-label="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
       <p class="subtitle">Grow your focus, one session at a time</p>
     </div>
 
@@ -20,7 +25,7 @@
       <div class="garden-panel">
         <h3><i class="fas fa-spa"></i> Your Garden</h3>
         <div class="garden-grid" id="garden-grid">
-          <!-- Will be populated with plants -->
+          <!-- Populated by JS -->
         </div>
         <div class="pagination">
           <button class="page-btn" id="prev-page"><i class="fas fa-chevron-left"></i></button>
@@ -74,6 +79,32 @@
       </div>
       <ul class="task-list" id="task-list"></ul>
     </div>
+  </div>
+
+  <!-- OVERLAY + MODALS -->
+  <div id="overlay" class="overlay hidden"></div>
+
+  <div id="settings-modal" class="modal hidden">
+    <h3>Settings</h3>
+    <label class="toggle-row">
+      <input type="checkbox" id="sound-toggle">
+      <span>Sound effects</span>
+    </label>
+    <label class="toggle-row">
+      <input type="checkbox" id="dark-mode-toggle">
+      <span>Dark mode</span>
+    </label>
+    <label class="toggle-row">
+      <input type="checkbox" id="notifications-toggle">
+      <span>Desktop notifications</span>
+    </label>
+    <button id="close-settings" class="modal-close">Close</button>
+  </div>
+
+  <div id="summary-modal" class="modal hidden">
+    <h3>Yesterday in your garden</h3>
+    <p id="summary-text"></p>
+    <button id="close-summary" class="modal-close">Nice!</button>
   </div>
 
   <script src="script.js"></script>
