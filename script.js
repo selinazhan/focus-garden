@@ -1,5 +1,5 @@
-let focusTime = 25 * 60;
-let breakTime = 5 * 60;
+let focusTime = 10;
+let breakTime = 10;
 let time = focusTime;
 let timer;
 let running = false;
