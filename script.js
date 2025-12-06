@@ -472,3 +472,140 @@ renderTasks();
 
 document.getElementById("streak").textContent = streak;
 document.getElementById("sessions").textContent = sessionsCompleted;
+
+/* ======================= BRAIN FACTS TAB ======================= */
+
+const brainFacts = [
+  {
+    icon: "🧠",
+    title: "The Pomodoro Technique",
+    content: "Working in 25-minute focused intervals followed by short breaks leverages your brain's natural attention span. This technique helps maintain high concentration while preventing mental fatigue.",
+    source: "Time Management Research"
+  },
+  {
+    icon: "⏰",
+    title: "Ultradian Rhythms",
+    content: "Your brain operates in 90-120 minute cycles of high and low alertness called ultradian rhythms. Taking breaks every 90 minutes aligns with your natural productivity peaks.",
+    source: "Sleep & Performance Studies"
+  },
+  {
+    icon: "💡",
+    title: "The Spacing Effect",
+    content: "Spreading out study sessions over time (spaced repetition) leads to better long-term retention than cramming. Your brain consolidates information more effectively with rest periods in between.",
+    source: "Cognitive Psychology"
+  },
+  {
+    icon: "🎯",
+    title: "Single-Tasking Superiority",
+    content: "Multitasking can reduce productivity by up to 40%. Your brain performs best when focusing on one task at a time, as task-switching depletes cognitive resources.",
+    source: "Neuroscience Research"
+  },
+  {
+    icon: "🌙",
+    title: "Sleep & Memory Consolidation",
+    content: "Sleep plays a crucial role in memory formation. During deep sleep, your brain consolidates what you learned during the day, transferring information from short-term to long-term memory.",
+    source: "Sleep Science"
+  },
+  {
+    icon: "🚶",
+    title: "Movement Boosts Cognition",
+    content: "Short walks or light exercise during breaks increase blood flow to the brain, improving focus and creativity. Even 5 minutes of movement can enhance cognitive performance.",
+    source: "Exercise Neuroscience"
+  },
+  {
+    icon: "🎵",
+    title: "Music & Focus",
+    content: "Instrumental music, especially classical or lo-fi, can enhance concentration for many people. However, music with lyrics may distract during complex cognitive tasks.",
+    source: "Music Psychology"
+  },
+  {
+    icon: "💧",
+    title: "Hydration & Brain Function",
+    content: "Even mild dehydration (1-2% loss) can impair attention, memory, and mood. Your brain is 75% water, so staying hydrated is essential for optimal cognitive performance.",
+    source: "Nutritional Neuroscience"
+  },
+  {
+    icon: "🧘",
+    title: "Mindfulness & Attention",
+    content: "Just 10 minutes of daily mindfulness meditation can improve sustained attention and reduce mind-wandering. Regular practice actually changes brain structure in areas related to focus.",
+    source: "Meditation Research"
+  },
+  {
+    icon: "📝",
+    title: "Handwriting vs. Typing",
+    content: "Taking notes by hand activates more brain regions than typing, leading to better conceptual understanding and retention. The slower pace forces deeper processing of information.",
+    source: "Educational Psychology"
+  }
+];
+
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+function renderFacts() {
+  const factsFeed = document.getElementById("facts-feed");
+  factsFeed.innerHTML = "";
+  
+  const shuffledFacts = shuffleArray(brainFacts);
+  
+  shuffledFacts.forEach((fact, index) => {
+    const card = document.createElement("div");
+    card.className = "fact-card";
+    card.style.animationDelay = `${index * 0.1}s`;
+    
+    card.innerHTML = `
+      <span class="fact-icon">${fact.icon}</span>
+      <h3 class="fact-title">${fact.title}</h3>
+      <p class="fact-content">${fact.content}</p>
+      <p class="fact-source">— ${fact.source}</p>
+    `;
+    
+    factsFeed.appendChild(card);
+  });
+}
+
+// Tab switching
+document.getElementById("timer-tab-btn").addEventListener("click", () => {
+  document.getElementById("timer-view").classList.add("active");
+  document.getElementById("facts-view").classList.remove("active");
+  document.getElementById("timer-tab-btn").classList.add("active");
+  document.getElementById("facts-tab-btn").classList.remove("active");
+});
+
+document.getElementById("facts-tab-btn").addEventListener("click", () => {
+  document.getElementById("facts-view").classList.add("active");
+  document.getElementById("timer-view").classList.remove("active");
+  document.getElementById("facts-tab-btn").classList.add("active");
+  document.getElementById("timer-tab-btn").classList.remove("active");
+  renderFacts(); // Refresh facts when switching to tab
+});
+
+document.getElementById("refresh-facts").addEventListener("click", () => {
+  renderFacts();
+  
+  // Add spin animation to refresh button
+  const btn = document.getElementById("refresh-facts");
+  const icon = btn.querySelector("i");
+  icon.style.animation = "none";
+  setTimeout(() => {
+    icon.style.animation = "spin 0.5s ease-in-out";
+  }, 10);
+});
+
+// Add spin animation for refresh icon
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+`;
+document.head.appendChild(style);
+
+// Initialize facts on load
+renderFacts();

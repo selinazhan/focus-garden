@@ -10,70 +10,100 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" id="timer-tab-btn">
+      <i class="fas fa-clock"></i> Timer
+    </button>
+    <button class="tab-btn" id="facts-tab-btn">
+      <i class="fas fa-brain"></i> Brain Facts
+    </button>
+  </div>
+
   <div class="main-container">
-    <div class="header">
-      <h1><i class="fas fa-seedling"></i> Focus Garden</h1>
-      <p class="subtitle">Grow your focus, one session at a time</p>
+    <!-- TIMER VIEW (default) -->
+    <div id="timer-view" class="view active">
+      <div class="header">
+        <h1><i class="fas fa-seedling"></i> Focus Garden</h1>
+        <p class="subtitle">Grow your focus, one session at a time</p>
+      </div>
+
+      <div class="layout">
+        <!-- LEFT: GARDEN GRID -->
+        <div class="garden-panel">
+          <h3><i class="fas fa-spa"></i> Your Garden</h3>
+          <div class="garden-grid" id="garden-grid">
+            <!-- Will be populated with plants -->
+          </div>
+          <div class="pagination">
+            <button class="page-btn" id="prev-page"><i class="fas fa-chevron-left"></i></button>
+            <span class="page-info" id="page-info">Page 1</span>
+            <button class="page-btn" id="next-page"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+
+        <!-- CENTER: TIMER -->
+        <div class="timer-panel">
+          <p id="mode-label"><i class="fas fa-book-open"></i> Focus Mode</p>
+          <h2 id="time">25:00</h2>
+          <div class="buttons">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+          </div>
+          <div class="stats">
+            <div class="stat-item">
+              <div class="stat-label">STREAK</div>
+              <div class="stat-value" id="streak">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">SESSIONS</div>
+              <div class="stat-value" id="sessions">0</div>
+            </div>
+          </div>
+          <button id="reset-stats-btn">Reset Stats</button>
+        </div>
+
+        <!-- RIGHT: CURRENT PLANT -->
+        <div class="plant-panel">
+          <h3><i class="fas fa-leaf"></i> Growing Now</h3>
+          <div class="current-plant">
+            <div class="plant-visual" id="plant-emoji">🌱</div>
+            <div class="plant-stage" id="plant-stage">Seed</div>
+            <div class="plant-progress" id="plant-progress">0/25 sessions</div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TASKS SECTION -->
+      <div class="tasks-panel">
+        <h3><i class="fas fa-check-circle"></i> Today's Tasks</h3>
+        <div class="task-input-container">
+          <input type="text" id="task-input" placeholder="Add a task...">
+          <button id="add-task-btn">Add Task</button>
+        </div>
+        <ul class="task-list" id="task-list"></ul>
+      </div>
     </div>
 
-    <div class="layout">
-      <!-- LEFT: GARDEN GRID -->
-      <div class="garden-panel">
-        <h3><i class="fas fa-spa"></i> Your Garden</h3>
-        <div class="garden-grid" id="garden-grid">
-          <!-- Will be populated with plants -->
-        </div>
-        <div class="pagination">
-          <button class="page-btn" id="prev-page"><i class="fas fa-chevron-left"></i></button>
-          <span class="page-info" id="page-info">Page 1</span>
-          <button class="page-btn" id="next-page"><i class="fas fa-chevron-right"></i></button>
-        </div>
+    <!-- BRAIN FACTS VIEW -->
+    <div id="facts-view" class="view">
+      <div class="header">
+        <h1><i class="fas fa-brain"></i> Brain Facts</h1>
+        <p class="subtitle">Learn about focus, memory, and productivity</p>
       </div>
 
-      <!-- CENTER: TIMER -->
-      <div class="timer-panel">
-        <p id="mode-label"><i class="fas fa-book-open"></i> Focus Mode</p>
-        <h2 id="time">25:00</h2>
-        <div class="buttons">
-          <button id="start">Start</button>
-          <button id="pause">Pause</button>
-          <button id="reset">Reset</button>
-        </div>
-        <div class="stats">
-          <div class="stat-item">
-            <div class="stat-label">STREAK</div>
-            <div class="stat-value" id="streak">0</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">SESSIONS</div>
-            <div class="stat-value" id="sessions">0</div>
-          </div>
-        </div>
-        <button id="reset-stats-btn">Reset Stats</button>
-      </div>
-
-      <!-- RIGHT: CURRENT PLANT -->
-      <div class="plant-panel">
-        <h3><i class="fas fa-leaf"></i> Growing Now</h3>
-        <div class="current-plant">
-          <div class="plant-visual" id="plant-emoji">🌱</div>
-          <div class="plant-stage" id="plant-stage">Seed</div>
-          <div class="plant-progress" id="plant-progress">0/25 sessions</div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-          </div>
+      <div class="facts-container">
+        <button class="refresh-btn" id="refresh-facts">
+          <i class="fas fa-sync-alt"></i> Refresh Facts
+        </button>
+        <div class="facts-feed" id="facts-feed">
+          <!-- Facts will be populated here -->
         </div>
       </div>
-    </div>
-
-    <!-- TASKS SECTION -->
-    <div class="tasks-panel">
-      <h3><i class="fas fa-check-circle"></i> Today's Tasks</h3>
-      <div class="task-input-container">
-        <input type="text" id="task-input" placeholder="Add a task...">
-        <button id="add-task-btn">Add Task</button>
-      </div>
-      <ul class="task-list" id="task-list"></ul>
     </div>
   </div>
 
